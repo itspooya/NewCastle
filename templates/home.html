@@ -10,6 +10,7 @@
     <link href="{% static 'css/all.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static  'css/custom.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'css/jquery.md.bootstrap.datetimepicker.style.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/scrollview.css' %}" rel="stylesheet" type="text/css">
     <!-- jQuery -->
 
     <meta charset="UTF-8">
@@ -482,6 +483,8 @@
 
                 <!--Secion heading-->
                 <div id="Abouthotel">
+                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+
                 <table id="dthotel_choose" class="table table-striped" cellspacing="0" width="100%">
                 <thead>
                 <tr>
@@ -502,6 +505,7 @@
                 {% endfor %}
                 </tbody>
                 </table>
+                </div>
 
                 </div>
                 <h1 class="text-center font-up font-bold mt-5 mb-3 pt-5 wow fadeIn" data-wow-delay="0.2s">گالری تصاویر</h1>
@@ -858,7 +862,8 @@ $('#reserve_date_end').MdPersianDateTimePicker({
                 event_data += '</tr>';
 
             });
-            $("#dthotel_choose").append(event_data);
+            $("#dthotel_choose").html(event_data);
+
             // Must return false to Not submit form
             return true;
         },
