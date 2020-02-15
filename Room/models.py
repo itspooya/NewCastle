@@ -33,8 +33,8 @@ class Room(models.Model):
 
 class Reserve(models.Model):
     reserve_id = models.AutoField(primary_key=True)
-    room = models.OneToOneField(Room,on_delete=models.DO_NOTHING)
-    user = models.OneToOneField(Users,on_delete=models.DO_NOTHING)
+    room = models.OneToOneField(Room,on_delete=models.CASCADE)
+    user = models.ForeignKey(Users,on_delete=models.CASCADE)
     start_time = models.DateField(blank=True)
     end_time = models.DateField(blank=True)
     total_price = models.IntegerField()
@@ -44,13 +44,15 @@ class Reserve(models.Model):
     def __str__(self):
         return self.room.name
 
-class payment(models.Model):
-    order_id = models.AutoField(primary_key=True)
-    reserve = models.OneToOneField(Reserve,on_delete=models.DO_NOTHING)
-    payed_price = models.IntegerField()
-    """discountcode = models.OneToOneField(Discount,on_delete=models.DO_NOTHING)"""
-
 class Discount(models.Model):
     discount_code = models.CharField(primary_key=True,max_length=50)
     discount_type = models.IntegerField(choices=[('1','درصدی'),('2','مبلغی')])
     discount_value = models.IntegerField()
+
+class payment(models.Model):
+    order_id = models.AutoField(primary_key=True)
+    reserve = models.OneToOneField(Reserve,on_delete=models.DO_NOTHING)
+    payed_price = models.IntegerField()
+    discountcode = models.OneToOneField(Discount,on_delete=models.CASCADE,null=True,blank=True)
+
+

@@ -20,7 +20,6 @@ def signup(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
-            print(form.cleaned_data)
             user = form.save(commit=False)
             user.is_active = False
             user.save()
@@ -74,7 +73,6 @@ def add_new_room(request):
                 vacant = 0
             elif request.POST.get("Vacanttype2") == ["on"]:
                 vacant = 1
-            print(request.FILES)
             my_form_data = add_room_form(request.POST, request.FILES)
             if my_form_data.is_valid():
                 myform_clean = my_form_data.cleaned_data
@@ -159,16 +157,17 @@ def reserve(request):
       eligble_rooms.append(x.no)
     for item in all_reserves:
       my_list.append({"room_number":item.room.no,"start_time":item.start_time,"end_time":item.end_time})
-    print(my_list)
-    print(eligble_rooms)
     start_date = datetime.strptime(startdate, "%a, %d %b %Y %H:%M:%S %Z")
     stop_date = datetime.strptime(stopdate, "%a, %d %b %Y %H:%M:%S %Z")
     delta = (stop_date) - (start_date)
     for i in range(delta.days + 1):
       day = start_date + timedelta(days=i)
       for myitem in my_list:
-        if(myitem['start_time']<day.date()<myitem['end_time']):
-          eligble_rooms.remove(myitem['room_number'])
+        if(myitem['start_time']<=day.date()<=myitem['end_time']):
+          try:
+            eligble_rooms.remove(myitem['room_number'])
+          except ValueError:
+            pass
     dest_room = Room.objects.filter(no__in=eligble_rooms)
     
 
